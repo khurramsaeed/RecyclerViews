@@ -1,5 +1,6 @@
 package com.ksm.recyclerviews;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class ListAdapter extends RecyclerView.Adapter<NameViewListHolder> {
+    private class ListAdapter extends RecyclerView.Adapter<DataViewListHolder> {
         private final ArrayList<String> titles;
 
         private ListAdapter() {
@@ -53,15 +54,33 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public NameViewListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public DataViewListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = getLayoutInflater().inflate(R.layout.list_item_container, parent, false);
-            return new NameViewListHolder(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String title = (String) view.getTag();
+                    removeTitle(title);
+                }
+            });
+
+
+            return new DataViewListHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(NameViewListHolder holder, int position) {
+        public void onBindViewHolder(DataViewListHolder holder, int position) {
             String title = titles.get(position);
             holder.tv.setText(title);
+
+            holder.itemView.setTag(title);
+
+            if (position % 2 == 0) {
+                holder.tv.setBackgroundColor(Color.parseColor("#22000000"));
+            }
+            else {
+                holder.tv.setBackground(null);
+            }
         }
 
     }
@@ -70,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
      * ViewHolder is object that is responsible for holding references
      * for the individuals items that appear in RecyclerView
      */
-    private class NameViewListHolder extends RecyclerView.ViewHolder {
+    private class DataViewListHolder extends RecyclerView.ViewHolder {
         public TextView tv;
 
-        public NameViewListHolder(View itemView) {
+        public DataViewListHolder(View itemView) {
             super(itemView);
 
             tv = (TextView) itemView.findViewById(R.id.list_item_title);
