@@ -50,8 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
         public void removeTitle(String title) {
             int position = titles.indexOf(title);
+            if (position == -1) {
+                return;
+            }
+
             titles.remove(position);
             notifyItemRemoved(position);
+            notifyItemRangeChanged(position, titles.size() );
         }
 
         @Override
