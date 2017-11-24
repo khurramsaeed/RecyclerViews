@@ -19,25 +19,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        // Vælge hvilke slags layout recyclerView skal have
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        ListAdapter adapter = new ListAdapter();
+        // Adapter
+        CustomDataAdapter adapter = new CustomDataAdapter();
         recyclerView.setAdapter(adapter);
 
+        // Generer noget data
         for (int i =0; i < 200; i++) {
-            adapter.addTitle("Added: " + Integer.toString(i));
+            adapter.addTitle("Title: " + Integer.toString(i));
         }
     }
 
-    private class ListAdapter extends RecyclerView.Adapter<DataViewListHolder> {
+    private class CustomDataAdapter extends RecyclerView.Adapter<DataViewListHolder> {
+        // Variabler der skal indgå i RecyclerView
         private final ArrayList<String> titles;
 
-        private ListAdapter() {
+        private CustomDataAdapter() {
             titles = new ArrayList<>();
         }
 
         public void addTitle(String title) {
             titles.add(title);
+            // Sidste element af Array
             notifyItemInserted(titles.size() - 1);
 
         }
@@ -50,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
+            // Antal items
             return titles.size();
         }
 
@@ -59,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    // Remove item onClick
                     String title = (String) view.getTag();
                     removeTitle(title);
                 }
             });
-
 
             return new DataViewListHolder(view);
         }
@@ -73,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             String title = titles.get(position);
             holder.tv.setText(title);
 
+            // Tag bruges ovenover til onClick
             holder.itemView.setTag(title);
 
             if (position % 2 == 0) {
@@ -86,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * ViewHolder is object that is responsible for holding references
-     * for the individuals items that appear in RecyclerView
+     * ViewHolder er et object som er ansvarlig for indeholder referencer
+     * til de enkelte items som vises i RecyclerView
      */
     private class DataViewListHolder extends RecyclerView.ViewHolder {
         public TextView tv;
